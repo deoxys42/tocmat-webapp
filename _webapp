@@ -1,0 +1,25 @@
+#compdef _webapp webapp
+
+_webapp() {
+	_arguments '1: :->attribute' '2: :->app_name'
+
+	case $state in
+	attribute)
+		_arguments -s \
+		'(-h --help)'{-h,--help}'[help in managing with webapp]' \
+		'(-a --all)'{-a,--all}'[displaying all webapps, whether they are or not deployed]' \
+		'(-d --deploy)'{-d,--deploy}'[eploying your webapps in 'tomcat7/webapps' directory]' \
+		'(-u --update)'{-u,--update}'[updating deployed in 'tomcat7/webapps' directory webapp]' \
+		'(-r --remove)'{-r,--remove}'[removing already deployed webapps from 'tomcat7/webapps' directory]'
+		;;
+	app_name)
+		if [ $words[CURRENT-1] = "-d" ] || [ $words[CURRENT-1] = "--deploy" ]
+		then
+			_directories -W /home/deoxys/Workspace/eclipse-workspaces/workspace-01/web-applications
+		elif [ $words[CURRENT-1] = "-r" ] || [ $words[CURRENT-1] = "--remove" ]
+		then
+			_directories -W /usr/share/tomcat7/webapps
+		fi
+		;;
+	esac
+}
